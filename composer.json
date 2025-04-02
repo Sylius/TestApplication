@@ -1,0 +1,20 @@
+{
+    "name": "sylius/test-kit",
+    "require": {
+        "php": "^8.2",
+        "sylius/sylius": "^2.0",
+        "symfony/debug-bundle": "*",
+        "symfony/web-profiler-bundle": "*",
+        "theofidry/alice-data-fixtures": "*"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "TestKitApp\\": "src/"
+        }
+    }
+}

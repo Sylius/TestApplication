@@ -1,0 +1,8 @@
+###> project files ###
+/composer.lock
+###< project files ###
+
+###> dependencies ###
+/vendor/
+/var/
+###< dependencies ###

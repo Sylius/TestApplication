@@ -4,17 +4,26 @@
         "php": "^8.2",
         "sylius/sylius": "^2.0",
         "symfony/debug-bundle": "*",
+        "symfony/dotenv": "*",
+        "symfony/flex": "*",
         "symfony/web-profiler-bundle": "*",
         "theofidry/alice-data-fixtures": "*"
     },
     "config": {
         "allow-plugins": {
-            "php-http/discovery": true
+            "php-http/discovery": true,
+            "symfony/flex": true
         }
     },
     "autoload": {
         "psr-4": {
             "TestKitApp\\": "src/"
+        }
+    },
+    "scripts": {
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
         }
     }
 }

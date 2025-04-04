@@ -1,0 +1,16 @@
+framework:
+    secret: '%env(APP_SECRET)%'
+    form: true
+    csrf_protection: true
+    session:
+        handler_id: ~
+
+when@dev:
+    framework:
+        profiler: { only_exceptions: false }
+
+when@test:
+    framework:
+        test: true
+        session:
+            storage_factory_id: session.storage.factory.mock_file

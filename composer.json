@@ -7,8 +7,12 @@
         "symfony/dotenv": "*",
         "symfony/flex": "*",
         "symfony/web-profiler-bundle": "*",
-        "theofidry/alice-data-fixtures": "*"
+        "theofidry/alice-data-fixtures": "*",
+        "symfony/runtime": "*"
     },
+    "bin": [
+        "bin/console"
+    ],
     "config": {
         "allow-plugins": {
             "php-http/discovery": true,

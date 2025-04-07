@@ -1,21 +1,45 @@
 #!/usr/bin/env php
 <?php
 
-use App\Kernel;
+use TestKitApp\Kernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Debug\Debug;
 
-if (!is_dir(dirname(__DIR__).'/vendor')) {
-    throw new LogicException('Dependencies are missing. Try running "composer install".');
+
+if ($GLOBALS['_composer_autoload_path']) {
+    require_once $GLOBALS['_composer_autoload_path'];
+} else {
+    foreach (array(__DIR__ . '/../../autoload_runtime.php', __DIR__ . '/../vendor/autoload_runtime.php', __DIR__ . '/vendor/autoload_runtime.php') as $file) {
+        if (file_exists($file)) {
+            require_once $file;
+
+            break;
+        }
+    }
 }
 
-if (!is_file(dirname(__DIR__).'/vendor/autoload_runtime.php')) {
-    throw new LogicException('Symfony Runtime is missing. Try running "composer require symfony/runtime".');
+
+$input = new ArgvInput();
+if (null !== $env = $input->getParameterOption(['--env', '-e'], null, true)) {
+    putenv('APP_ENV='.$_SERVER['APP_ENV'] = $_ENV['APP_ENV'] = $env);
 }
 
-require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
+if ($input->hasParameterOption('--no-debug', true)) {
+    putenv('APP_DEBUG='.$_SERVER['APP_DEBUG'] = $_ENV['APP_DEBUG'] = '0');
+}
 
-return function (array $context) {
-    $kernel = new Kernel($context['APP_ENV'], (bool) $context['APP_DEBUG']);
+require dirname(__DIR__).'/config/bootstrap.php';
 
-    return new Application($kernel);
-};
+if ($_SERVER['APP_DEBUG']) {
+    umask(0000);
+
+    if (class_exists(Debug::class)) {
+        Debug::enable();
+    }
+}
+
+$kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
+$application = new Application($kernel);
+$application->run($input);
+

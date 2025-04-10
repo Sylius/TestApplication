@@ -15,8 +15,9 @@
     ],
     "config": {
         "allow-plugins": {
-            "php-http/discovery": true,
-            "symfony/flex": true
+            "php-http/discovery": false,
+            "symfony/flex": true,
+            "symfony/runtime": true
         }
     },
     "autoload": {

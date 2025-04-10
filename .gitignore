@@ -8,6 +8,7 @@
 ###< dependencies ###
 
 ###> symfony/framework-bundle ###
+/public/bundles
 .env.*.local
 .env.local
 .env.local.php
@@ -19,3 +20,7 @@
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/*.pem
+###< lexik/jwt-authentication-bundle ###

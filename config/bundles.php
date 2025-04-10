@@ -60,8 +60,8 @@ $bundles = [
     Twig\Extra\TwigExtraBundle\TwigExtraBundle::class => ['all' => true],
 ];
 
-if (class_exists(App\AppBundle::class)) {
-    $bundles[App\AppBundle::class] = ['all' => true];
-}
+//if (class_exists(App\AppBundle::class)) {
+//    $bundles[App\AppBundle::class] = ['all' => true];
+//}
 
 return $bundles;

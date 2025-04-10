@@ -13,9 +13,6 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\AbstractConfigurat
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader as ContainerPhpFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
-use Symfony\Component\Routing\Loader\PhpFileLoader as RoutingPhpFileLoader;
-use Symfony\Component\Routing\RouteCollection;
 
 final class Kernel extends BaseKernel
 {
@@ -66,8 +63,10 @@ final class Kernel extends BaseKernel
             $valuePreProcessor = AbstractConfigurator::$valuePreProcessor;
             AbstractConfigurator::$valuePreProcessor = fn ($value) => $this === $value ? new Reference('kernel') : $value;
 
-            foreach (explode(';', $_SERVER['CONFIGS_TO_IMPORT']) as $filePath) {
-                $kernelLoader->import($filePath);
+            if (isset($_SERVER['CONFIGS_TO_IMPORT'])) {
+                foreach (explode(';', $_SERVER['CONFIGS_TO_IMPORT']) as $filePath) {
+                    $kernelLoader->import($filePath);
+                }
             }
 
             try {
@@ -94,9 +93,11 @@ final class Kernel extends BaseKernel
 
         $contents = require $bundlesPath;
 
-        foreach (explode(';', $_SERVER['PLUGINS_TO_ENABLE']) as $pluginClass) {
-            if (class_exists($pluginClass)) {
-                $contents[$pluginClass] = ['all' => true];
+        if (isset($_SERVER['PLUGINS_TO_ENABLE'])) {
+            foreach (explode(';', $_SERVER['PLUGINS_TO_ENABLE']) as $pluginClass) {
+                if (class_exists($pluginClass)) {
+                    $contents[$pluginClass] = ['all' => true];
+                }
             }
         }
 

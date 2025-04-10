@@ -1,13 +1,13 @@
 #!/usr/bin/env php
 <?php
 
+use Symfony\Component\ErrorHandler\Debug;
 use TestKitApp\Kernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
-use Symfony\Component\Debug\Debug;
 
 
-if ($GLOBALS['_composer_autoload_path']) {
+if (isset($GLOBALS['_composer_autoload_path']) && $GLOBALS['_composer_autoload_path']) {
     require_once $GLOBALS['_composer_autoload_path'];
 } else {
     foreach (array(__DIR__ . '/../../autoload_runtime.php', __DIR__ . '/../vendor/autoload_runtime.php', __DIR__ . '/vendor/autoload_runtime.php') as $file) {

@@ -6,7 +6,8 @@ use Symfony\Component\ErrorHandler\Debug;
 use Symfony\Component\HttpFoundation\Request;
 use TestKitApp\Kernel;
 
-require_once dirname(__DIR__) . '/../../autoload.php';
+//require_once dirname(__DIR__) . '/../../autoload.php';
+require_once dirname(__DIR__) . '/vendor/autoload.php';
 require dirname(__DIR__) . '/config/bootstrap.php';
 
 if ($_SERVER['APP_DEBUG']) {

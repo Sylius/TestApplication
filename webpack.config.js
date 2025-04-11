@@ -1,7 +1,7 @@
 const path = require('path');
 const Encore = require('@symfony/webpack-encore');
 
-const syliusBundles = path.resolve(__dirname, './vendor/sylius/sylius/src/Sylius/Bundle/');
+const syliusBundles = path.resolve(__dirname, '../sylius/src/Sylius/Bundle/');
 const uiBundleScripts = path.resolve(syliusBundles, 'UiBundle/Resources/private/js/');
 const uiBundleResources = path.resolve(syliusBundles, 'UiBundle/Resources/private/');
 
@@ -9,7 +9,7 @@ const uiBundleResources = path.resolve(syliusBundles, 'UiBundle/Resources/privat
 Encore
     .setOutputPath('public/build/shop/')
     .setPublicPath('/build/shop')
-    .addEntry('shop-entry', './vendor/sylius/sylius/src/Sylius/Bundle/ShopBundle/Resources/private/entry.js')
+    .addEntry('shop-entry', '../sylius/src/Sylius/Bundle/ShopBundle/Resources/private/entry.js')
     .disableSingleRuntimeChunk()
     .cleanupOutputBeforeBuild()
     .enableSourceMaps(!Encore.isProduction())
@@ -29,7 +29,7 @@ Encore.reset();
 Encore
     .setOutputPath('public/build/admin/')
     .setPublicPath('/build/admin')
-    .addEntry('admin-entry', './vendor/sylius/sylius/src/Sylius/Bundle/AdminBundle/Resources/private/entry.js')
+    .addEntry('admin-entry', '../sylius/src/Sylius/Bundle/AdminBundle/Resources/private/entry.js')
     .disableSingleRuntimeChunk()
     .cleanupOutputBeforeBuild()
     .enableSourceMaps(!Encore.isProduction())
@@ -85,5 +85,14 @@ appAdminConfig.resolve.alias['sylius/ui-resources'] = uiBundleResources;
 appAdminConfig.resolve.alias['sylius/bundle'] = syliusBundles;
 appAdminConfig.externals = Object.assign({}, appAdminConfig.externals, { window: 'window', document: 'document' });
 appAdminConfig.name = 'app.admin';
+
+nodeModulesPath = [
+    path.resolve(__dirname, 'node_modules'),
+    'node_modules'
+];
+shopConfig.resolve.modules = nodeModulesPath;
+adminConfig.resolve.modules = nodeModulesPath;
+appShopConfig.resolve.modules = nodeModulesPath;
+appAdminConfig.resolve.modules = nodeModulesPath;
 
 module.exports = [shopConfig, adminConfig, appShopConfig, appAdminConfig];

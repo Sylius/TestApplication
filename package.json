@@ -6,10 +6,10 @@
         "watch": "encore dev --watch"
     },
     "dependencies": {
-        "@sylius-ui/admin": "file:vendor/sylius/sylius/src/Sylius/Bundle/AdminBundle",
-        "@sylius-ui/shop": "file:vendor/sylius/sylius/src/Sylius/Bundle/ShopBundle",
-        "@symfony/ux-autocomplete": "file:vendor/symfony/ux-autocomplete/assets",
-        "@symfony/ux-live-component": "file:vendor/symfony/ux-live-component/assets"
+        "@sylius-ui/admin": "file:../sylius/src/Sylius/Bundle/AdminBundle",
+        "@sylius-ui/shop": "file:../sylius/src/Sylius/Bundle/ShopBundle",
+        "@symfony/ux-autocomplete": "file:../../../vendor/symfony/ux-autocomplete/assets",
+        "@symfony/ux-live-component": "file:../../../vendor/symfony/ux-live-component/assets"
     },
     "devDependencies": {
         "@hotwired/stimulus": "^3.0.0",

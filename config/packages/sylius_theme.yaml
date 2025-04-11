@@ -1,4 +1,0 @@
-when@test:
-    sylius_theme:
-        sources:
-            test: ~

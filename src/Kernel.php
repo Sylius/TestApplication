@@ -13,6 +13,9 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\AbstractConfigurat
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader as ContainerPhpFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
+use Symfony\Component\Routing\Loader\PhpFileLoader as RoutingPhpFileLoader;
+use Symfony\Component\Routing\RouteCollection;
 
 final class Kernel extends BaseKernel
 {
@@ -106,5 +109,36 @@ final class Kernel extends BaseKernel
                 yield new $class();
             }
         }
+    }
+
+    public function loadRoutes(LoaderInterface $loader): RouteCollection
+    {
+        $file = (new \ReflectionObject($this))->getFileName();
+        /* @var RoutingPhpFileLoader $kernelLoader */
+        $kernelLoader = $loader->getResolver()->resolve($file, 'php');
+        $kernelLoader->setCurrentDir(\dirname($file));
+        $collection = new RouteCollection();
+
+        $configureRoutes = new \ReflectionMethod($this, 'configureRoutes');
+        $routes = new RoutingConfigurator($collection, $kernelLoader, $file, $file, $this->getEnvironment());
+        $configureRoutes->getClosure($this)($routes);
+
+        if (isset($_SERVER['ROUTES_TO_IMPORT'])) {
+            foreach (explode(';', $_SERVER['ROUTES_TO_IMPORT']) as $filePath) {
+                $routes->import($filePath);
+            }
+        }
+
+        foreach ($collection as $route) {
+            $controller = $route->getDefault('_controller');
+
+            if (\is_array($controller) && [0, 1] === array_keys($controller) && $this === $controller[0]) {
+                $route->setDefault('_controller', ['kernel', $controller[1]]);
+            } elseif ($controller instanceof \Closure && $this === ($r = new \ReflectionFunction($controller))->getClosureThis() && !str_contains($r->name, '{closure')) {
+                $route->setDefault('_controller', ['kernel', $r->name]);
+            }
+        }
+
+        return $collection;
     }
 }

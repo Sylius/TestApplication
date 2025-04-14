@@ -63,12 +63,6 @@ final class Kernel extends BaseKernel
             $valuePreProcessor = AbstractConfigurator::$valuePreProcessor;
             AbstractConfigurator::$valuePreProcessor = fn ($value) => $this === $value ? new Reference('kernel') : $value;
 
-            if (isset($_SERVER['CONFIGS_TO_IMPORT'])) {
-                foreach (explode(';', $_SERVER['CONFIGS_TO_IMPORT']) as $filePath) {
-                    $kernelLoader->import($filePath);
-                }
-            }
-
             try {
                 $configureContainer->getClosure($this)(new ContainerConfigurator($container, $kernelLoader, $instanceof, $file, $file, $this->getEnvironment()), $loader, $container);
             } finally {
@@ -79,7 +73,11 @@ final class Kernel extends BaseKernel
 
             $container->setAlias($kernelClass, 'kernel')->setPublic(true);
 
-
+            if (isset($_SERVER['CONFIGS_TO_IMPORT'])) {
+                foreach (explode(';', $_SERVER['CONFIGS_TO_IMPORT']) as $filePath) {
+                    $kernelLoader->import($filePath);
+                }
+            }
         });
 
     }

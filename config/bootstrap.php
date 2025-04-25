@@ -4,24 +4,11 @@ declare(strict_types=1);
 
 use Symfony\Component\Dotenv\Dotenv;
 
-if (!class_exists(Dotenv::class)) {
-    throw new RuntimeException('Please run "composer require symfony/dotenv" to load the ".env" files configuring the application.');
-} elseif (method_exists(Dotenv::class, 'bootEnv')) {
-    (new Dotenv())->bootEnv(dirname(__DIR__) . '/.env');
+(new Dotenv())->bootEnv(dirname(__DIR__) . '/.env');
 
-    $pluginEnvPath = dirname(__DIR__, 4) . '/tests/TestKit/.env';
-    if (file_exists($pluginEnvPath)) {
-        (new Dotenv())->bootEnv($pluginEnvPath);
-    }
-
-    return;
-} else {
-    (new Dotenv(true))->loadEnv(dirname(__DIR__) . '/.env');
-
-    $pluginEnvPath = dirname(__DIR__, 4) . '/tests/TestKit/.env';
-    if (file_exists($pluginEnvPath)) {
-        (new Dotenv(true))->loadEnv($pluginEnvPath);
-    }
+$pluginEnvPath = dirname(__DIR__, 4) . '/tests/TestKit/.env';
+if (file_exists($pluginEnvPath)) {
+    (new Dotenv())->bootEnv($pluginEnvPath);
 }
 
 $_SERVER['APP_ENV'] = $_ENV['APP_ENV'] = ($_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? null) ?: 'dev';

@@ -4,7 +4,7 @@
 
 use Symfony\Component\ErrorHandler\Debug;
 use Symfony\Component\HttpFoundation\Request;
-use TestKitApp\Kernel;
+use TestApplication\Kernel;
 
 require_once dirname(__DIR__, 3) . '/autoload.php';
 require dirname(__DIR__) . '/config/bootstrap.php';

@@ -1,14 +1,14 @@
 {
-    "name": "sylius/test-kit",
+    "name": "sylius/test-application",
     "require": {
         "php": "^8.2",
         "sylius/sylius": "^2.0",
         "symfony/debug-bundle": "*",
         "symfony/dotenv": "*",
         "symfony/flex": "*",
+        "symfony/runtime": "*",
         "symfony/web-profiler-bundle": "*",
-        "theofidry/alice-data-fixtures": "*",
-        "symfony/runtime": "*"
+        "theofidry/alice-data-fixtures": "*"
     },
     "bin": [
         "bin/console"
@@ -22,7 +22,7 @@
     },
     "autoload": {
         "psr-4": {
-            "TestKitApp\\": "src/"
+            "TestApplication\\": "src/"
         }
     },
     "scripts": {

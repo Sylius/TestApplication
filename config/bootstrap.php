@@ -6,7 +6,7 @@ use Symfony\Component\Dotenv\Dotenv;
 
 (new Dotenv())->bootEnv(dirname(__DIR__) . '/.env');
 
-$pluginEnvPath = dirname(__DIR__, 4) . '/tests/TestKit/.env';
+$pluginEnvPath = dirname(__DIR__, 4) . '/tests/TestApplication/.env';
 if (file_exists($pluginEnvPath)) {
     (new Dotenv())->bootEnv($pluginEnvPath);
 }

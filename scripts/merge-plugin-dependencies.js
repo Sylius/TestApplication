@@ -4,7 +4,7 @@ const path = require('path');
 const root = path.resolve(__dirname, '..');
 const packagePath = path.join(root, 'package.json');
 const pluginRoot = path.resolve(root, '../../..');
-const pluginPackagePath = path.join(pluginRoot, 'tests', 'TestKit', 'package.json');
+const pluginPackagePath = path.join(pluginRoot, 'tests', 'TestApplication', 'package.json');
 
 if (!fs.existsSync(pluginPackagePath)) {
     process.exit(0);

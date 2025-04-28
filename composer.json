@@ -1,5 +1,6 @@
 {
     "name": "sylius/test-application",
+    "license": "MIT",
     "require": {
         "php": "^8.2",
         "sylius/sylius": "^2.0",

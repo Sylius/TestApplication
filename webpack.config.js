@@ -14,12 +14,14 @@ const shopConfig = SyliusShop.getWebpackConfig(path.resolve(__dirname));
 Encore
     .setOutputPath('public/build/app/shop')
     .setPublicPath('/build/app/shop')
-    .addEntry('app-shop-entry', './assets/shop/entrypoint.js')
+    .addEntry('app-shop-entry', '../../../assets/shop/entrypoint.js')
     .disableSingleRuntimeChunk()
     .cleanupOutputBeforeBuild()
     .enableSourceMaps(!Encore.isProduction())
     .enableVersioning(Encore.isProduction())
-    .enableSassLoader();
+    .enableSassLoader()
+    .enableStimulusBridge(path.resolve(__dirname, '../../../assets/shop/controllers.json'))
+;
 
 const appShopConfig = Encore.getWebpackConfig();
 
@@ -32,16 +34,27 @@ Encore.reset();
 Encore
     .setOutputPath('public/build/app/admin')
     .setPublicPath('/build/app/admin')
-    .addEntry('app-admin-entry', './assets/admin/entrypoint.js')
+    .addEntry('app-admin-entry', '../../../assets/admin/entrypoint.js')
     .disableSingleRuntimeChunk()
     .cleanupOutputBeforeBuild()
     .enableSourceMaps(!Encore.isProduction())
     .enableVersioning(Encore.isProduction())
-    .enableSassLoader();
+    .enableSassLoader()
+    .enableStimulusBridge(path.resolve(__dirname, '../../../assets/admin/controllers.json'))
+;
 
 const appAdminConfig = Encore.getWebpackConfig();
 
 appAdminConfig.externals = Object.assign({}, appAdminConfig.externals, { window: 'window', document: 'document' });
 appAdminConfig.name = 'app.admin';
+
+nodeModulesPath = [
+    path.resolve(__dirname, 'node_modules'),
+    'node_modules'
+];
+shopConfig.resolve.modules = nodeModulesPath;
+adminConfig.resolve.modules = nodeModulesPath;
+appShopConfig.resolve.modules = nodeModulesPath;
+appAdminConfig.resolve.modules = nodeModulesPath;
 
 module.exports = [shopConfig, adminConfig, appShopConfig, appAdminConfig];

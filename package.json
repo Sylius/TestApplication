@@ -1,6 +1,7 @@
 {
     "license": "MIT",
     "scripts": {
+        "preinstall": "node scripts/merge-plugin-dependencies.js",
         "build": "encore dev",
         "build:prod": "encore production",
         "watch": "encore dev --watch"

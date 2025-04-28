@@ -2,9 +2,9 @@
 <?php
 
 use Symfony\Component\ErrorHandler\Debug;
-use TestKitApp\Kernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
+use TestApplication\Kernel;
 
 
 if (isset($GLOBALS['_composer_autoload_path']) && $GLOBALS['_composer_autoload_path']) {

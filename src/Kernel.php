@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TestApplication;
+namespace Sylius\TestApplication;
 
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;

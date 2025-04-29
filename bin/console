@@ -1,10 +1,10 @@
 #!/usr/bin/env php
 <?php
 
+use Sylius\TestApplication\Kernel;
 use Symfony\Component\ErrorHandler\Debug;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
-use TestApplication\Kernel;
 
 
 if (isset($GLOBALS['_composer_autoload_path']) && $GLOBALS['_composer_autoload_path']) {

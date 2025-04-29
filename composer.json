@@ -23,7 +23,7 @@
     },
     "autoload": {
         "psr-4": {
-            "TestApplication\\": "src/"
+            "Sylius\\TestApplication\\": "src/"
         }
     },
     "scripts": {

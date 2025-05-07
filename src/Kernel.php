@@ -94,10 +94,10 @@ final class Kernel extends BaseKernel
 
         $contents = require $bundlesPath;
 
-        if (isset($_SERVER['PLUGINS_TO_ENABLE'])) {
-            foreach (explode(';', $_SERVER['PLUGINS_TO_ENABLE']) as $pluginClass) {
-                if (class_exists($pluginClass)) {
-                    $contents[$pluginClass] = ['all' => true];
+        if (isset($_SERVER['BUNDLES_TO_ENABLE'])) {
+            foreach (explode(';', $_SERVER['BUNDLES_TO_ENABLE']) as $bundleClass) {
+                if (class_exists($bundleClass)) {
+                    $contents[$bundleClass] = ['all' => true];
                 }
             }
         }

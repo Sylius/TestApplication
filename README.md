@@ -41,7 +41,7 @@ This package solves that problem by:
 
     ```dotenv
     DATABASE_URL=mysql://root@127.0.0.1/test_application_%kernel.environment%
-    PLUGINS_TO_ENABLE="Acme\Plugin\AcmePlugin"
+    BUNDLES_TO_ENABLE="Acme\Plugin\AcmePlugin"
     CONFIGS_TO_IMPORT="@AcmePlugin/tests/TestApplication/config/config.yaml"
     ROUTES_TO_IMPORT="@AcmePlugin/config/routes.yaml"
     ```

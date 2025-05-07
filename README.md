@@ -41,12 +41,12 @@ This package solves that problem by:
 
     ```dotenv
     DATABASE_URL=mysql://root@127.0.0.1/test_application_%kernel.environment%
-    PLUGINS_TO_ENABLE="Sylius\CmsPlugin\SyliusCmsPlugin"
-    CONFIGS_TO_IMPORT="@SyliusCmsPlugin/tests/TestApplication/config/config.yaml"
-    ROUTES_TO_IMPORT="@SyliusCmsPlugin/config/routes.yaml"
+    PLUGINS_TO_ENABLE="Acme\Plugin\AcmePlugin"
+    CONFIGS_TO_IMPORT="@AcmePlugin/tests/TestApplication/config/config.yaml"
+    ROUTES_TO_IMPORT="@AcmePlugin/config/routes.yaml"
     ```
 
-    > 💡 The values provided above are examples and may need to be adjusted for your plugin.
+    > 💡 The values provided above are examples and should be adjusted for your plugin.
 
 
 1. If needed, place plugin-specific configuration files in the `tests/TestApplication/config` directory
@@ -78,7 +78,7 @@ This package solves that problem by:
                                 is_bundle: false
                                 type: attribute
                                 dir: '%kernel.project_dir%/../../../tests/TestApplication/src/Entity'
-                                prefix: Tests\Plugin\TestApplication
+                                prefix: Tests\Acme\Plugin\TestApplication
         ```
       
     - The namespace is registered properly in the autoloader, in `composer.json` file
@@ -87,7 +87,7 @@ This package solves that problem by:
         {
             "autoload-dev": {
                 "psr-4": {
-                    "Tests\\Plugin\\TestApplication\\": "tests/TestApplication/src/"
+                    "Tests\\Acme\\Plugin\\TestApplication\\": "tests/TestApplication/src/"
                 }
             }
         }
@@ -107,7 +107,7 @@ This package solves that problem by:
 1. Run your server locally:
 
     ```bash
-    symfony serve
+    symfony serve --dir=vendor/sylius/test-application/public
     ```
 
 ## Example usage

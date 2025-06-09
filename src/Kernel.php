@@ -102,6 +102,18 @@ final class Kernel extends BaseKernel
             }
         }
 
+        $additionalBundlesPath = $this->getAdditionalBundlesPath();
+        if (is_file($additionalBundlesPath)) {
+            $additionalBundles = require $additionalBundlesPath;
+            if (is_array($additionalBundles)) {
+                foreach ($additionalBundles as $bundleClass) {
+                    if (class_exists($bundleClass)) {
+                        $contents[$bundleClass] = ['all' => true];
+                    }
+                }
+            }
+        }
+
         foreach ($contents as $class => $envs) {
             if ($envs[$this->environment] ?? $envs['all'] ?? false) {
                 yield new $class();
@@ -138,5 +150,10 @@ final class Kernel extends BaseKernel
         }
 
         return $collection;
+    }
+
+    private function getAdditionalBundlesPath(): string
+    {
+        return \dirname($this->getProjectDir(), 3) . '/tests/TestApplication/config/bundles.php';
     }
 }

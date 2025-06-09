@@ -39,10 +39,6 @@ if ($_SERVER['APP_DEBUG']) {
     }
 }
 
-if (isset($_ENV['BUNDLES_TO_ENABLE'])) {
-    $_SERVER['BUNDLES_TO_ENABLE'] = $_ENV['BUNDLES_TO_ENABLE'];
-}
-
 if (isset($_ENV['CONFIGS_TO_IMPORT'])) {
     $_SERVER['CONFIGS_TO_IMPORT'] = $_ENV['CONFIGS_TO_IMPORT'];
 }

@@ -48,6 +48,15 @@ This package solves that problem by:
 
     > 💡 The values provided above are examples and should be adjusted for your plugin.
 
+1. Optionally, return conditionally enabled bundles from `tests/TestApplication/BundlesToLoad.php`:
+
+    ```php
+    <?php
+
+    return [
+        Acme\\Plugin\\AcmePlugin::class,
+    ];
+    ```
 
 1. If needed, place plugin-specific configuration files in the `tests/TestApplication/config` directory
    (e.g. `services.yaml`, `routes.yaml`) and load them by env variables.

@@ -48,7 +48,7 @@ This package solves that problem by:
 
     > 💡 The values provided above are examples and should be adjusted for your plugin.
 
-1. Optionally, return conditionally enabled bundles from `tests/TestApplication/BundlesToLoad.php`:
+1. Optionally, return conditionally enabled bundles from `tests/TestApplication/bundles.php`:
 
     ```php
     <?php

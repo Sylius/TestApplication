@@ -39,10 +39,6 @@ if ($_SERVER['APP_DEBUG']) {
     }
 }
 
-if (isset($_ENV['BUNDLES_TO_ENABLE'])) {
-    $_SERVER['BUNDLES_TO_ENABLE'] = $_ENV['BUNDLES_TO_ENABLE'];
-}
-
 if (isset($_ENV['CONFIGS_TO_IMPORT'])) {
     $_SERVER['CONFIGS_TO_IMPORT'] = $_ENV['CONFIGS_TO_IMPORT'];
 }
@@ -51,6 +47,13 @@ if (isset($_ENV['ROUTES_TO_IMPORT'])) {
     $_SERVER['ROUTES_TO_IMPORT'] = $_ENV['ROUTES_TO_IMPORT'];
 }
 
+if (isset($_ENV["BUNDLES_TO_ENABLE"])) {
+    $_SERVER["BUNDLES_TO_ENABLE"] = $_ENV["BUNDLES_TO_ENABLE"];
+}
+
+if (isset($_ENV["TEST_APP_BUNDLES_PATH"])) {
+    $_SERVER["TEST_APP_BUNDLES_PATH"] = $_ENV["TEST_APP_BUNDLES_PATH"];
+}
 
 $kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
 $application = new Application($kernel);

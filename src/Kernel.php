@@ -82,28 +82,26 @@ final class Kernel extends BaseKernel
                 }
             }
         });
-
     }
+
     public function registerBundles(): iterable
     {
+        $env = $this->getEnvironment();
+
         if (!is_file($bundlesPath = $this->getBundlesPath())) {
             yield new FrameworkBundle();
-
             return;
         }
 
-        $contents = require $bundlesPath;
+        $contents = $this->loadMainBundles($bundlesPath);
+        $additionalBundlesLoaded = $this->loadAdditionalBundlesFromEnv($contents);
 
-        if (isset($_SERVER['BUNDLES_TO_ENABLE'])) {
-            foreach (explode(';', $_SERVER['BUNDLES_TO_ENABLE']) as $bundleClass) {
-                if (class_exists($bundleClass)) {
-                    $contents[$bundleClass] = ['all' => true];
-                }
-            }
+        if (!$additionalBundlesLoaded) {
+            $this->loadBundlesToEnable($contents);
         }
 
         foreach ($contents as $class => $envs) {
-            if ($envs[$this->environment] ?? $envs['all'] ?? false) {
+            if ($envs[$env] ?? $envs['all'] ?? false) {
                 yield new $class();
             }
         }
@@ -138,5 +136,50 @@ final class Kernel extends BaseKernel
         }
 
         return $collection;
+    }
+
+    private function loadMainBundles(string $path): array
+    {
+        return require $path;
+    }
+
+    private function loadAdditionalBundlesFromEnv(array &$contents): bool
+    {
+        if (!isset($_SERVER['TEST_APP_BUNDLES_PATH'])) {
+            return false;
+        }
+
+        $relativePath = $_SERVER['TEST_APP_BUNDLES_PATH'];
+        $absolutePath = \dirname($this->getProjectDir(), 3) . '/' . ltrim($relativePath, '/');
+
+        if (!is_file($absolutePath)) {
+            return false;
+        }
+
+        $additionalBundles = require $absolutePath;
+        if (!\is_array($additionalBundles)) {
+            return false;
+        }
+
+        foreach ($additionalBundles as $bundleClass => $envs) {
+            if (\class_exists($bundleClass)) {
+                $contents[$bundleClass] = $envs;
+            }
+        }
+
+        return true;
+    }
+
+    private function loadBundlesToEnable(array &$contents): void
+    {
+        if (!isset($_SERVER['BUNDLES_TO_ENABLE'])) {
+            return;
+        }
+
+        foreach (explode(';', $_SERVER['BUNDLES_TO_ENABLE']) as $bundleClass) {
+            if (\class_exists($bundleClass)) {
+                $contents[$bundleClass] = ['all' => true];
+            }
+        }
     }
 }

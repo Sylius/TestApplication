@@ -41,13 +41,24 @@ This package solves that problem by:
 
     ```dotenv
     DATABASE_URL=mysql://root@127.0.0.1/test_application_%kernel.environment%
-    BUNDLES_TO_ENABLE="Acme\Plugin\AcmePlugin"
     CONFIGS_TO_IMPORT="@AcmePlugin/tests/TestApplication/config/config.yaml"
     ROUTES_TO_IMPORT="@AcmePlugin/config/routes.yaml"
+    TEST_APP_BUNDLES_PATH="tests/TestApplication/config/bundles.php"
+    # Optional: fall back to a semicolon-separated list of bundles
+    BUNDLES_TO_ENABLE="Acme\Plugin\AcmePlugin"
     ```
 
     > 💡 The values provided above are examples and should be adjusted for your plugin.
 
+1. Optionally, return conditionally enabled bundles from `tests/TestApplication/bundles.php`:
+
+    ```php
+    <?php
+
+    return [
+        Acme\\Plugin\\AcmePlugin::class => ['all' => true],
+    ];
+    ```
 
 1. If needed, place plugin-specific configuration files in the `tests/TestApplication/config` directory
    (e.g. `services.yaml`, `routes.yaml`) and load them by env variables.

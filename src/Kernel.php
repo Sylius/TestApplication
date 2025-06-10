@@ -82,10 +82,12 @@ final class Kernel extends BaseKernel
                 }
             }
         });
-
     }
+
     public function registerBundles(): iterable
     {
+        $env = $this->getEnvironment();
+
         if (!is_file($bundlesPath = $this->getBundlesPath())) {
             yield new FrameworkBundle();
 
@@ -93,6 +95,22 @@ final class Kernel extends BaseKernel
         }
 
         $contents = require $bundlesPath;
+
+        if (isset($_SERVER['TEST_APP_BUNDLES_PATH'])) {
+            $relativePath = $_SERVER['TEST_APP_BUNDLES_PATH'];
+            $additionalBundlesPath = \dirname($this->getProjectDir(), 3) . '/' . ltrim($relativePath, '/');
+
+            if (is_file($additionalBundlesPath)) {
+                $additionalBundles = require $additionalBundlesPath;
+                if (is_array($additionalBundles)) {
+                    foreach ($additionalBundles as $bundleClass => $envs) {
+                        if (class_exists($bundleClass)) {
+                            $contents[$bundleClass] = $envs;
+                        }
+                    }
+                }
+            }
+        }
 
         if (isset($_SERVER['BUNDLES_TO_ENABLE'])) {
             foreach (explode(';', $_SERVER['BUNDLES_TO_ENABLE']) as $bundleClass) {
@@ -102,20 +120,8 @@ final class Kernel extends BaseKernel
             }
         }
 
-        $additionalBundlesPath = $this->getAdditionalBundlesPath();
-        if (is_file($additionalBundlesPath)) {
-            $additionalBundles = require $additionalBundlesPath;
-            if (is_array($additionalBundles)) {
-                foreach ($additionalBundles as $bundleClass) {
-                    if (class_exists($bundleClass)) {
-                        $contents[$bundleClass] = ['all' => true];
-                    }
-                }
-            }
-        }
-
         foreach ($contents as $class => $envs) {
-            if ($envs[$this->environment] ?? $envs['all'] ?? false) {
+            if ($envs[$env] ?? $envs['all'] ?? false) {
                 yield new $class();
             }
         }
@@ -150,10 +156,5 @@ final class Kernel extends BaseKernel
         }
 
         return $collection;
-    }
-
-    private function getAdditionalBundlesPath(): string
-    {
-        return \dirname($this->getProjectDir(), 3) . '/tests/TestApplication/config/bundles.php';
     }
 }

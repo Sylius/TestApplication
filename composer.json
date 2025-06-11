@@ -3,7 +3,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "sylius/sylius": "^2.0",
+        "sylius/sylius": "~2.0.0",
         "symfony/debug-bundle": "*",
         "symfony/dotenv": "*",
         "symfony/flex": "*",

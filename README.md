@@ -17,6 +17,10 @@ Developer tool that provides a ready-to-use Sylius-based application for testing
    We encourage you to adopt it in your plugins, provide feedback, and contribute to improve the developer experience 
    for the entire Sylius ecosystem.
 
+## Documentation
+
+For more information about the **Test Application**, please refer to the [Sylius documentation](https://docs.sylius.com/sylius-plugins/plugins-development-guide/testapplication).
+
 ## Purpose
 
 Previously, each plugin had to maintain its own copy of a test application, leading to duplicated configuration, 

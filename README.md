@@ -50,7 +50,7 @@ This package solves that problem by:
     SYLIUS_TEST_APP_ROUTES_TO_IMPORT="@AcmePlugin/config/routes.yaml"
     SYLIUS_TEST_APP_BUNDLES_PATH="tests/TestApplication/config/bundles.php"
     # Optionally, replace the default bundles entirely
-    SYLIUS_TEST_APPLICATION_BUNDLES_REPLACE_PATH="tests/TestApplication/config/bundles.php"
+    SYLIUS_TEST_APP_BUNDLES_REPLACE_PATH="tests/TestApplication/config/bundles.php"
     # Optionally, use a semicolon-separated list to add needed bundles
     SYLIUS_TEST_APP_BUNDLES_TO_ENABLE="Acme\Plugin\AcmePlugin"
     ```

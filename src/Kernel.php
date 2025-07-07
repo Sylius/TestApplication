@@ -189,8 +189,8 @@ final class Kernel extends BaseKernel
 
     private function resolveBundlesPath(): string
     {
-        if (isset($_SERVER['SYLIUS_TEST_APPLICATION_BUNDLES_REPLACE_PATH'])) {
-            $relativePath = $_SERVER['SYLIUS_TEST_APPLICATION_BUNDLES_REPLACE_PATH'];
+        if (isset($_SERVER['SYLIUS_TEST_APP_BUNDLES_REPLACE_PATH'])) {
+            $relativePath = $_SERVER['SYLIUS_TEST_APP_BUNDLES_REPLACE_PATH'];
             $absolutePath = \dirname($this->getProjectDir(), 3) . '/' . ltrim($relativePath, '/');
 
             if (is_file($absolutePath)) {

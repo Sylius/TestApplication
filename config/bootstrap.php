@@ -6,9 +6,12 @@ use Symfony\Component\Dotenv\Dotenv;
 
 (new Dotenv())->bootEnv(dirname(__DIR__) . '/.env');
 
-$pluginEnvPath = dirname(__DIR__, 4) . '/tests/TestApplication/.env';
-if (file_exists($pluginEnvPath)) {
+$pluginDir = dirname(__DIR__, 4);
+if (file_exists($pluginEnvPath = $pluginDir . '/tests/TestApplication/.env')) {
     (new Dotenv())->bootEnv($pluginEnvPath);
+
+    $_SERVER['APP_CACHE_DIR'] = $_SERVER['APP_CACHE_DIR'] ?? $pluginDir . '/var/cache';
+    $_SERVER['APP_LOG_DIR'] = $_SERVER['APP_LOG_DIR'] ?? $pluginDir . '/var/log';
 }
 
 $_SERVER['APP_ENV'] = $_ENV['APP_ENV'] = ($_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? null) ?: 'dev';

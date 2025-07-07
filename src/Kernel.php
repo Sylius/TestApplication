@@ -76,8 +76,9 @@ final class Kernel extends BaseKernel
 
             $container->setAlias($kernelClass, 'kernel')->setPublic(true);
 
-            if (isset($_SERVER['CONFIGS_TO_IMPORT'])) {
-                foreach (explode(';', $_SERVER['CONFIGS_TO_IMPORT']) as $filePath) {
+            $configsToImport = $_SERVER['SYLIUS_TEST_APP_CONFIGS_TO_IMPORT'] ?? null;
+            if (null !== $configsToImport) {
+                foreach (explode(';', $configsToImport) as $filePath) {
                     $kernelLoader->import($filePath);
                 }
             }
@@ -119,8 +120,9 @@ final class Kernel extends BaseKernel
         $routes = new RoutingConfigurator($collection, $kernelLoader, $file, $file, $this->getEnvironment());
         $configureRoutes->getClosure($this)($routes);
 
-        if (isset($_SERVER['ROUTES_TO_IMPORT'])) {
-            foreach (explode(';', $_SERVER['ROUTES_TO_IMPORT']) as $filePath) {
+        $routesToImport = $_SERVER['SYLIUS_TEST_APP_ROUTES_TO_IMPORT'] ?? null;
+        if (null !== $routesToImport) {
+            foreach (explode(';', $routesToImport) as $filePath) {
                 $routes->import($filePath);
             }
         }
@@ -145,12 +147,12 @@ final class Kernel extends BaseKernel
 
     private function loadAdditionalBundlesFromEnv(array &$contents): bool
     {
-        if (!isset($_SERVER['TEST_APP_BUNDLES_PATH'])) {
+        $bundlesPathEnv = $_SERVER['SYLIUS_TEST_APP_BUNDLES_PATH'] ?? null;
+        if (null === $bundlesPathEnv) {
             return false;
         }
 
-        $relativePath = $_SERVER['TEST_APP_BUNDLES_PATH'];
-        $absolutePath = \dirname($this->getProjectDir(), 3) . '/' . ltrim($relativePath, '/');
+        $absolutePath = \dirname($this->getProjectDir(), 3) . '/' . ltrim($bundlesPathEnv, '/');
 
         if (!is_file($absolutePath)) {
             return false;
@@ -172,11 +174,12 @@ final class Kernel extends BaseKernel
 
     private function loadBundlesToEnable(array &$contents): void
     {
-        if (!isset($_SERVER['BUNDLES_TO_ENABLE'])) {
+        $bundlesToEnable = $_SERVER['SYLIUS_TEST_APP_BUNDLES_TO_ENABLE'] ?? null;
+        if (null === $bundlesToEnable) {
             return;
         }
 
-        foreach (explode(';', $_SERVER['BUNDLES_TO_ENABLE']) as $bundleClass) {
+        foreach (explode(';', $bundlesToEnable) as $bundleClass) {
             if (\class_exists($bundleClass)) {
                 $contents[$bundleClass] = ['all' => true];
             }

@@ -89,7 +89,8 @@ final class Kernel extends BaseKernel
     {
         $env = $this->getEnvironment();
 
-        if (!is_file($bundlesPath = $this->getBundlesPath())) {
+        $bundlesPath = $this->resolveBundlesPath();
+        if (!is_file($bundlesPath)) {
             yield new FrameworkBundle();
             return;
         }
@@ -184,5 +185,19 @@ final class Kernel extends BaseKernel
                 $contents[$bundleClass] = ['all' => true];
             }
         }
+    }
+
+    private function resolveBundlesPath(): string
+    {
+        if (isset($_SERVER['SYLIUS_TEST_APP_BUNDLES_REPLACE_PATH'])) {
+            $relativePath = $_SERVER['SYLIUS_TEST_APP_BUNDLES_REPLACE_PATH'];
+            $absolutePath = \dirname($this->getProjectDir(), 3) . '/' . ltrim($relativePath, '/');
+
+            if (is_file($absolutePath)) {
+                return $absolutePath;
+            }
+        }
+
+        return $this->getBundlesPath();
     }
 }

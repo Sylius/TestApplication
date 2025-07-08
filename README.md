@@ -70,17 +70,22 @@ This package solves that problem by:
 1. If needed, place plugin-specific configuration files in the `tests/TestApplication/config` directory
    (e.g. `services.yaml`, `routes.yaml`) and load them by env variables.
 
-1. If your plugin requires additional JavaScript dependencies, add them to `tests/TestApplication/package.json`:
+1. If your plugin requires additional JavaScript dependencies, add them to `tests/TestApplication/package.json`.
+   You can also remove existing dependencies from the default `package.json.dist` using the `removeDependencies` and `removeDevDependencies` keys:
 
     ```json
     {
         "dependencies": {
             "trix": "^2.0.0"
-        }
+        },
+        "removeDevDependencies": [
+            "tom-select"
+        ]
     }
     ```
 
-   This file will be merged with the main TestApplication `package.json`.
+   This file will be merged with the main TestApplication `package.json` and any packages listed 
+   under `removeDependencies` or `removeDevDependencies` will be omitted.
 
 1. If your plugin requires entity extensions, add them in `tests/TestApplication/src/Entity` and ensure:
 

@@ -10,8 +10,12 @@ const pluginPackagePath = path.join(pluginRoot, 'tests', 'TestApplication', 'pac
 const pluginPackageExists = fs.existsSync(pluginPackagePath);
 const pluginPackage = pluginPackageExists
     ? JSON.parse(fs.readFileSync(pluginPackagePath, 'utf-8'))
-    : { dependencies: {}, devDependencies: {} }
-;
+    : {
+          dependencies: {},
+          devDependencies: {},
+          removeDependencies: [],
+          removeDevDependencies: [],
+      };
 
 const basePackage = JSON.parse(fs.readFileSync(packageDistPath, 'utf-8'));
 
@@ -24,10 +28,26 @@ function mergeDependencies(target = {}, source = {}) {
     return result;
 }
 
+function removeDependencies(target = {}, packages = []) {
+    const result = { ...target };
+
+    for (const pkg of packages) {
+        delete result[pkg];
+    }
+
+    return result;
+}
+
 const finalPackage = {
     ...basePackage,
-    dependencies: mergeDependencies(basePackage.dependencies, pluginPackage.dependencies),
-    devDependencies: mergeDependencies(basePackage.devDependencies, pluginPackage.devDependencies),
+    dependencies: removeDependencies(
+        mergeDependencies(basePackage.dependencies, pluginPackage.dependencies),
+        pluginPackage.removeDependencies ?? []
+    ),
+    devDependencies: removeDependencies(
+        mergeDependencies(basePackage.devDependencies, pluginPackage.devDependencies),
+        pluginPackage.removeDevDependencies ?? []
+    ),
 };
 
 fs.writeFileSync(packagePath, JSON.stringify(finalPackage, null, 4));

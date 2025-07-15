@@ -8,22 +8,15 @@
     </a>
 </p>
 
-TestApplication
-===============
+Test Application
+================
 
-Developer tool that provides a ready-to-use Sylius-based application for testing and running Sylius plugins.
-
-> ⚠️ While TestApplication is still evolving, it is already being used internally and in official plugins.
-   We encourage you to adopt it in your plugins, provide feedback, and contribute to improve the developer experience 
-   for the entire Sylius ecosystem.
-
-## Documentation
-
-For more information about the **Test Application**, please refer to the [Sylius documentation](https://docs.sylius.com/sylius-plugins/plugins-development-guide/testapplication).
+The Test Application is a shared testing environment designed to simplify Sylius plugin development. Instead of setting up 
+a full application in every plugin, you now use a common, pre-configured application maintained by the Sylius team.
 
 ## Purpose
 
-Previously, each plugin had to maintain its own copy of a test application, leading to duplicated configuration, 
+Previously, each plugin had to maintain its own copy of a test application, leading to duplicated configuration,
 maintenance overhead, and version incompatibilities.
 
 This package solves that problem by:
@@ -33,104 +26,14 @@ This package solves that problem by:
 - Simplifying the setup and execution of tests within plugins
 - Creating versioned variants aligned with specific Sylius versions (e.g. `1.14`, `2.0`, etc.)
 
-## Installation and configuration in a Plugin
+## Documentation
 
-1. Require the TestApplication as a development dependency:
-
-    ```bash
-    composer require sylius/test-application:2.0.x-dev --dev
-    ```
-
-1. Set environment variables in `tests/TestApplication/.env`:
-
-    ```dotenv
-    DATABASE_URL=mysql://root@127.0.0.1/test_application_%kernel.environment%
-
-    SYLIUS_TEST_APP_CONFIGS_TO_IMPORT="@AcmePlugin/tests/TestApplication/config/config.yaml"
-    SYLIUS_TEST_APP_ROUTES_TO_IMPORT="@AcmePlugin/config/routes.yaml"
-    SYLIUS_TEST_APP_BUNDLES_PATH="tests/TestApplication/config/bundles.php"
-    # Optionally, replace the default bundles entirely
-    SYLIUS_TEST_APP_BUNDLES_REPLACE_PATH="tests/TestApplication/config/bundles.php"
-    # Optionally, use a semicolon-separated list to add needed bundles
-    SYLIUS_TEST_APP_BUNDLES_TO_ENABLE="Acme\Plugin\AcmePlugin"
-    ```
-
-    > 💡 The values provided above are examples and should be adjusted for your plugin.
-
-1. Optionally, return conditionally enabled bundles from `tests/TestApplication/bundles.php`:
-
-    ```php
-    <?php
-
-    return [
-        Acme\\Plugin\\AcmePlugin::class => ['all' => true],
-    ];
-    ```
-
-1. If needed, place plugin-specific configuration files in the `tests/TestApplication/config` directory
-   (e.g. `services.yaml`, `routes.yaml`) and load them by env variables.
-
-1. If your plugin requires additional JavaScript dependencies, add them to `tests/TestApplication/package.json`:
-
-    ```json
-    {
-        "dependencies": {
-            "trix": "^2.0.0"
-        }
-    }
-    ```
-
-   This file will be merged with the main TestApplication `package.json`.
-
-1. If your plugin requires entity extensions, add them in `tests/TestApplication/src/Entity` and ensure:
-
-    - Doctrine mappings are configured:
-
-        ```
-        doctrine:
-            orm:
-                entity_managers:
-                    default:
-                        mappings:
-                            TestApplication:
-                                is_bundle: false
-                                type: attribute
-                                dir: '%kernel.project_dir%/../../../tests/TestApplication/src/Entity'
-                                prefix: Tests\Acme\Plugin\TestApplication
-        ```
-      
-    - The namespace is registered properly in the autoloader, in `composer.json` file
-
-        ```json
-        {
-            "autoload-dev": {
-                "psr-4": {
-                    "Tests\\Acme\\Plugin\\TestApplication\\": "tests/TestApplication/src/"
-                }
-            }
-        }
-
-1. Build the TestApplication in a Plugin:
-
-    ```bash
-    vendor/bin/console doctrine:database:create
-    vendor/bin/console doctrine:migration:migrate -n
-    vendor/bin/console sylius:fixtures:load -n
-    
-    (cd vendor/sylius/test-application && yarn install)
-    (cd vendor/sylius/test-application && yarn build)
-    vendor/bin/console assets:install
-    ```
-
-1. Run your server locally:
-
-    ```bash
-    symfony serve --dir=vendor/sylius/test-application/public
-    ```
+For more information about the **Test Application**, and on installation and configuration instructions, 
+please refer to the [Sylius documentation](https://docs.sylius.com/sylius-plugins/plugins-development-guide/test-application).
 
 ## Example usage
 
-See an example implementation in [the pull request](https://github.com/Sylius/CmsPlugin/pull/53) to Sylius/CmsPlugin.
+See an example implementation in [the pull request](https://github.com/Sylius/InvoicingPlugin/pull/373) to Sylius/InvoicingPlugin.
 
 ## Community
 

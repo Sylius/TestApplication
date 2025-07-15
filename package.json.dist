@@ -9,8 +9,8 @@
     "dependencies": {
         "@sylius-ui/admin": "file:../sylius/src/Sylius/Bundle/AdminBundle",
         "@sylius-ui/shop": "file:../sylius/src/Sylius/Bundle/ShopBundle",
-        "@symfony/ux-autocomplete": "file:../../../vendor/symfony/ux-autocomplete/assets",
-        "@symfony/ux-live-component": "file:../../../vendor/symfony/ux-live-component/assets"
+        "@symfony/ux-autocomplete": "file:../../symfony/ux-autocomplete/assets",
+        "@symfony/ux-live-component": "file:../../symfony/ux-live-component/assets"
     },
     "devDependencies": {
         "@hotwired/stimulus": "^3.0.0",

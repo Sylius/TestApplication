@@ -50,7 +50,10 @@ Encore.reset();
 Encore
     .setOutputPath('public/build/app/shop')
     .setPublicPath('/build/app/shop')
-    .addEntry('app-shop-entry', './assets/shop/entrypoint.js')
+    .addEntry('app-shop-entry', '../../../assets/shop/entrypoint.js')
+    .addAliases({
+        '@vendor': path.resolve(__dirname, '../..'),
+    })
     .disableSingleRuntimeChunk()
     .cleanupOutputBeforeBuild()
     .enableSourceMaps(!Encore.isProduction())
@@ -59,9 +62,6 @@ Encore
 
 const appShopConfig = Encore.getWebpackConfig();
 
-appShopConfig.resolve.alias['sylius/ui'] = uiBundleScripts;
-appShopConfig.resolve.alias['sylius/ui-resources'] = uiBundleResources;
-appShopConfig.resolve.alias['sylius/bundle'] = syliusBundles;
 appShopConfig.externals = Object.assign({}, appShopConfig.externals, { window: 'window', document: 'document' });
 appShopConfig.name = 'app.shop';
 
@@ -71,7 +71,10 @@ Encore.reset();
 Encore
     .setOutputPath('public/build/app/admin')
     .setPublicPath('/build/app/admin')
-    .addEntry('app-admin-entry', './assets/admin/entrypoint.js')
+    .addEntry('app-admin-entry', '../../../assets/admin/entrypoint.js')
+    .addAliases({
+        '@vendor': path.resolve(__dirname, '../..'),
+    })
     .disableSingleRuntimeChunk()
     .cleanupOutputBeforeBuild()
     .enableSourceMaps(!Encore.isProduction())
@@ -80,9 +83,6 @@ Encore
 
 const appAdminConfig = Encore.getWebpackConfig();
 
-appAdminConfig.resolve.alias['sylius/ui'] = uiBundleScripts;
-appAdminConfig.resolve.alias['sylius/ui-resources'] = uiBundleResources;
-appAdminConfig.resolve.alias['sylius/bundle'] = syliusBundles;
 appAdminConfig.externals = Object.assign({}, appAdminConfig.externals, { window: 'window', document: 'document' });
 appAdminConfig.name = 'app.admin';
 

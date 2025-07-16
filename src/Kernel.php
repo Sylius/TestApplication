@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace TestKitApp;
+namespace Sylius\TestApplication;
 
+use PSS\SymfonyMockerContainer\DependencyInjection\MockerContainer;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
@@ -76,34 +77,34 @@ final class Kernel extends BaseKernel
 
             $container->setAlias($kernelClass, 'kernel')->setPublic(true);
 
-            if (isset($_SERVER['CONFIGS_TO_IMPORT'])) {
-                foreach (explode(';', $_SERVER['CONFIGS_TO_IMPORT']) as $filePath) {
+            $configsToImport = $_SERVER['SYLIUS_TEST_APP_CONFIGS_TO_IMPORT'] ?? null;
+            if (null !== $configsToImport) {
+                foreach (explode(';', $configsToImport) as $filePath) {
                     $kernelLoader->import($filePath);
                 }
             }
         });
-
     }
+
     public function registerBundles(): iterable
     {
-        if (!is_file($bundlesPath = $this->getBundlesPath())) {
-            yield new FrameworkBundle();
+        $env = $this->getEnvironment();
 
+        $bundlesPath = $this->resolveBundlesPath();
+        if (!is_file($bundlesPath)) {
+            yield new FrameworkBundle();
             return;
         }
 
-        $contents = require $bundlesPath;
+        $contents = $this->loadMainBundles($bundlesPath);
+        $additionalBundlesLoaded = $this->loadAdditionalBundlesFromEnv($contents);
 
-        if (isset($_SERVER['PLUGINS_TO_ENABLE'])) {
-            foreach (explode(';', $_SERVER['PLUGINS_TO_ENABLE']) as $pluginClass) {
-                if (class_exists($pluginClass)) {
-                    $contents[$pluginClass] = ['all' => true];
-                }
-            }
+        if (!$additionalBundlesLoaded) {
+            $this->loadBundlesToEnable($contents);
         }
 
         foreach ($contents as $class => $envs) {
-            if ($envs[$this->environment] ?? $envs['all'] ?? false) {
+            if ($envs[$env] ?? $envs['all'] ?? false) {
                 yield new $class();
             }
         }
@@ -121,8 +122,9 @@ final class Kernel extends BaseKernel
         $routes = new RoutingConfigurator($collection, $kernelLoader, $file, $file, $this->getEnvironment());
         $configureRoutes->getClosure($this)($routes);
 
-        if (isset($_SERVER['ROUTES_TO_IMPORT'])) {
-            foreach (explode(';', $_SERVER['ROUTES_TO_IMPORT']) as $filePath) {
+        $routesToImport = $_SERVER['SYLIUS_TEST_APP_ROUTES_TO_IMPORT'] ?? null;
+        if (null !== $routesToImport) {
+            foreach (explode(';', $routesToImport) as $filePath) {
                 $routes->import($filePath);
             }
         }
@@ -138,5 +140,80 @@ final class Kernel extends BaseKernel
         }
 
         return $collection;
+    }
+
+    protected function getContainerBaseClass(): string
+    {
+        if ($this->isTestEnvironment() && class_exists(MockerContainer::class)) {
+            return MockerContainer::class;
+        }
+
+        return parent::getContainerBaseClass();
+    }
+
+    private function isTestEnvironment(): bool
+    {
+        return 0 === strpos($this->getEnvironment(), 'test');
+    }
+
+
+    private function loadMainBundles(string $path): array
+    {
+        return require $path;
+    }
+
+    private function loadAdditionalBundlesFromEnv(array &$contents): bool
+    {
+        $bundlesPathEnv = $_SERVER['SYLIUS_TEST_APP_BUNDLES_PATH'] ?? null;
+        if (null === $bundlesPathEnv) {
+            return false;
+        }
+
+        $absolutePath = \dirname($this->getProjectDir(), 3) . '/' . ltrim($bundlesPathEnv, '/');
+
+        if (!is_file($absolutePath)) {
+            return false;
+        }
+
+        $additionalBundles = require $absolutePath;
+        if (!\is_array($additionalBundles)) {
+            return false;
+        }
+
+        foreach ($additionalBundles as $bundleClass => $envs) {
+            if (\class_exists($bundleClass)) {
+                $contents[$bundleClass] = $envs;
+            }
+        }
+
+        return true;
+    }
+
+    private function loadBundlesToEnable(array &$contents): void
+    {
+        $bundlesToEnable = $_SERVER['SYLIUS_TEST_APP_BUNDLES_TO_ENABLE'] ?? null;
+        if (null === $bundlesToEnable) {
+            return;
+        }
+
+        foreach (explode(';', $bundlesToEnable) as $bundleClass) {
+            if (\class_exists($bundleClass)) {
+                $contents[$bundleClass] = ['all' => true];
+            }
+        }
+    }
+
+    private function resolveBundlesPath(): string
+    {
+        if (isset($_SERVER['SYLIUS_TEST_APP_BUNDLES_REPLACE_PATH'])) {
+            $relativePath = $_SERVER['SYLIUS_TEST_APP_BUNDLES_REPLACE_PATH'];
+            $absolutePath = \dirname($this->getProjectDir(), 3) . '/' . ltrim($relativePath, '/');
+
+            if (is_file($absolutePath)) {
+                return $absolutePath;
+            }
+        }
+
+        return $this->getBundlesPath();
     }
 }

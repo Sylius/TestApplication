@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Sylius\TestApplication;
 
+use PSS\SymfonyMockerContainer\DependencyInjection\MockerContainer;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
@@ -140,6 +141,21 @@ final class Kernel extends BaseKernel
 
         return $collection;
     }
+
+    protected function getContainerBaseClass(): string
+    {
+        if ($this->isTestEnvironment() && class_exists(MockerContainer::class)) {
+            return MockerContainer::class;
+        }
+
+        return parent::getContainerBaseClass();
+    }
+
+    private function isTestEnvironment(): bool
+    {
+        return 0 === strpos($this->getEnvironment(), 'test');
+    }
+
 
     private function loadMainBundles(string $path): array
     {

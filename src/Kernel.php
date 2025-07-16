@@ -76,7 +76,7 @@ final class Kernel extends BaseKernel
 
             $container->setAlias($kernelClass, 'kernel')->setPublic(true);
 
-            $configsToImport = $_SERVER['SYLIUS_TEST_APP_CONFIGS_TO_IMPORT'] ?? null;
+            $configsToImport = $_SERVER['SYLIUS_TEST_APP_CONFIGS_TO_IMPORT'] ?? $_SERVER['CONFIGS_TO_IMPORT'] ?? null;
             if (null !== $configsToImport) {
                 foreach (explode(';', $configsToImport) as $filePath) {
                     $kernelLoader->import($filePath);
@@ -121,7 +121,7 @@ final class Kernel extends BaseKernel
         $routes = new RoutingConfigurator($collection, $kernelLoader, $file, $file, $this->getEnvironment());
         $configureRoutes->getClosure($this)($routes);
 
-        $routesToImport = $_SERVER['SYLIUS_TEST_APP_ROUTES_TO_IMPORT'] ?? null;
+        $routesToImport = $_SERVER['SYLIUS_TEST_APP_ROUTES_TO_IMPORT'] ?? $_SERVER['ROUTES_TO_IMPORT'] ?? null;
         if (null !== $routesToImport) {
             foreach (explode(';', $routesToImport) as $filePath) {
                 $routes->import($filePath);
@@ -148,7 +148,7 @@ final class Kernel extends BaseKernel
 
     private function loadAdditionalBundlesFromEnv(array &$contents): bool
     {
-        $bundlesPathEnv = $_SERVER['SYLIUS_TEST_APP_BUNDLES_PATH'] ?? null;
+        $bundlesPathEnv = $_SERVER['SYLIUS_TEST_APP_BUNDLES_PATH'] ?? $_SERVER['TEST_APP_BUNDLES_PATH'] ?? null;
         if (null === $bundlesPathEnv) {
             return false;
         }
@@ -175,7 +175,7 @@ final class Kernel extends BaseKernel
 
     private function loadBundlesToEnable(array &$contents): void
     {
-        $bundlesToEnable = $_SERVER['SYLIUS_TEST_APP_BUNDLES_TO_ENABLE'] ?? null;
+        $bundlesToEnable = $_SERVER['SYLIUS_TEST_APP_BUNDLES_TO_ENABLE'] ?? $_SERVER['BUNDLES_TO_ENABLE'] ?? null;
         if (null === $bundlesToEnable) {
             return;
         }
@@ -189,8 +189,8 @@ final class Kernel extends BaseKernel
 
     private function resolveBundlesPath(): string
     {
-        if (isset($_SERVER['SYLIUS_TEST_APP_BUNDLES_REPLACE_PATH'])) {
-            $relativePath = $_SERVER['SYLIUS_TEST_APP_BUNDLES_REPLACE_PATH'];
+        $relativePath = $_SERVER['SYLIUS_TEST_APP_BUNDLES_REPLACE_PATH'] ?? null;
+        if (null !== $relativePath) {
             $absolutePath = \dirname($this->getProjectDir(), 3) . '/' . ltrim($relativePath, '/');
 
             if (is_file($absolutePath)) {

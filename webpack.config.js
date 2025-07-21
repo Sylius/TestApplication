@@ -21,6 +21,7 @@ Encore
     .setOutputPath('public/build/app/shop')
     .setPublicPath('/build/app/shop')
     .addEntry('app-shop-entry', path.resolve(__dirname, './assets/shop/entrypoint.js'))
+    .addEntry('plugin-shop-entry', path.resolve(__dirname, '../../../assets/shop/entrypoint.js'))
     .addAliases({
         '@vendor': path.resolve(__dirname, '../..'),
     })
@@ -52,6 +53,7 @@ Encore
     .setOutputPath('public/build/app/admin')
     .setPublicPath('/build/app/admin')
     .addEntry('app-admin-entry', path.resolve(__dirname, './assets/admin/entrypoint.js'))
+    .addEntry('plugin-admin-entry', path.resolve(__dirname, '../../../assets/admin/entrypoint.js'))
     .addAliases({
         '@vendor': path.resolve(__dirname, '../..'),
     })

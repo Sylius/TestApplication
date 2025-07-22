@@ -10,7 +10,6 @@
 
 ###> dependencies ###
 /vendor/
-/var/
 ###< dependencies ###
 
 ###> symfony/framework-bundle ###

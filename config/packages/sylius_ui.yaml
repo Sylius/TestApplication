@@ -5,7 +5,6 @@ sylius_ui:
                 app_styles:
                     template: "admin/styles.html.twig"
                     priority: -10
-
         sylius.admin.layout.javascripts:
             blocks:
                 app_scripts:

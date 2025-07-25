@@ -1,0 +1,24 @@
+sylius_ui:
+    events:
+        sylius.admin.layout.stylesheets:
+            blocks:
+                app_styles:
+                    template: "admin/styles.html.twig"
+                    priority: -10
+
+        sylius.admin.layout.javascripts:
+            blocks:
+                app_scripts:
+                    template: "admin/scripts.html.twig"
+                    priority: -10
+
+        sylius.shop.layout.stylesheets:
+            blocks:
+                app_styles:
+                    template: "shop/styles.html.twig"
+                    priority: -10
+        sylius.shop.layout.javascripts:
+            blocks:
+                app_scripts:
+                    template: "shop/scripts.html.twig"
+                    priority: -10

@@ -1,6 +1,7 @@
 twig:
     paths: ['%kernel.project_dir%/templates']
     debug: '%kernel.debug%'
+    default_path: '%kernel.project_dir%/../../../tests/TestApplication/templates'
     strict_variables: '%kernel.debug%'
 
 services:

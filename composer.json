@@ -2,8 +2,8 @@
     "name": "sylius/test-application",
     "license": "MIT",
     "require": {
-        "php": "^8.2",
-        "sylius/sylius": "~2.2.0",
+        "php": "^8.3",
+        "sylius/sylius": "~2.3.0@alpha",
         "symfony/debug-bundle": "*",
         "symfony/dotenv": "*",
         "symfony/flex": "*",

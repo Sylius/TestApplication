@@ -29,7 +29,7 @@ This package solves that problem by:
 ## Documentation
 
 For more information about the **Test Application**, and on installation and configuration instructions, 
-please refer to the [Sylius documentation](https://docs.sylius.com/sylius-plugins/plugins-development-guide/test-application).
+please refer to the [Sylius documentation](https://docs.sylius.com/plugins-development-guide/test-application).
 
 ## Example usage
 

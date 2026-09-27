@@ -7,8 +7,8 @@
         "watch": "encore dev --watch"
     },
     "dependencies": {
-        "@sylius-ui/admin": "file:../sylius/src/Sylius/Bundle/AdminBundle",
-        "@sylius-ui/shop": "file:../sylius/src/Sylius/Bundle/ShopBundle",
+        "@sylius-ui/admin": "file:../sylius/src/Sylius/Bundle/AdminBundle/Resources/npm",
+        "@sylius-ui/shop": "file:../sylius/src/Sylius/Bundle/ShopBundle/Resources/npm",
         "@symfony/ux-autocomplete": "file:../../symfony/ux-autocomplete/assets",
         "@symfony/ux-live-component": "file:../../symfony/ux-live-component/assets"
     },
